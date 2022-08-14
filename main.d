@@ -20,13 +20,18 @@
 
 import std.stdio;
 
+
+import std.file;
+
+
+// local 
+import key;
 import database;
 import transaction: CTransaction;
 import uint256;
 import txindex;
 import context;
 import utils;
-import std.file;
 
 
 
@@ -42,7 +47,7 @@ CTransaction buildTx()
 
 
 
-void main()
+void test1()
 {
 
 	// create an empty datadir
@@ -134,4 +139,25 @@ void main()
 
 
     assert(qw.getBalance() == 25 * COIN);
+}
+
+void test2()
+{
+
+    
+    CKey key = new CKey();
+    key.MakeNewKey();
+    assert(key.GetPubKeyHex().length == 130);
+    writeln(key.GetPubKeyHex());
+
+
+
+
+
+}
+
+
+void main()
+{
+    test2();
 }

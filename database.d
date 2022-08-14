@@ -35,6 +35,7 @@ import context;
 
 __gshared static MDB_env *env;
 __gshared static MDB_dbi db_txindexes;
+__gshared static MDB_dbi db_keys;
 
 
 
@@ -53,7 +54,7 @@ __gshared static int database_init(const char* data_dir)
     MDB_txn *txn = null;
 
     rc = mdb_env_create(&env);
-    mdb_env_set_maxdbs(env, cast(MDB_dbi)1);
+    mdb_env_set_maxdbs(env, cast(MDB_dbi)2);
 
     if ((rc = mdb_env_open(env, data_dir, MDB_NOMETASYNC|MDB_WRITEMAP|MDB_MAPASYNC, std.conv.octal!664)) != 0)
     {
@@ -77,6 +78,14 @@ __gshared static int database_init(const char* data_dir)
 
     // transaction indexes 
     if ((rc = mdb_dbi_open(txn, "txindexes", flags, &db_txindexes)) != 0)
+    {
+        err = mdb_strerror(rc);
+        writeln(format("%s (%s)", err, data_dir));
+        exit(rc);
+    }
+
+    // keys indexes 
+    if ((rc = mdb_dbi_open(txn, "keysindexes", flags, &db_keys)) != 0)
     {
         err = mdb_strerror(rc);
         writeln(format("%s (%s)", err, data_dir));
@@ -140,6 +149,7 @@ __gshared static bool store_txindex(TxIndex *txindex)
     	return false;
     return true;
 }
+
 
 
 

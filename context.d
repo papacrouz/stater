@@ -32,6 +32,7 @@ __gshared TxIndex[Uint256] mapTxIndex;
 
 
 
+
 ////////////// MapTxIndex
 
 TxIndex readTxIndex(Uint256 hashIn)
@@ -63,3 +64,4 @@ bool mapTxIndexCanFind(Uint256 hashIn)
 
 	return false;
 }
+
