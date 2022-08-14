@@ -34,7 +34,19 @@ __gshared TxIndex[Uint256] mapTxIndex;
 
 ////////////// MapTxIndex
 
-bool mapTxIndexCanFind(Uint256 hash)
+TxIndex readTxIndex(Uint256 hashIn)
+{
+	TxIndex ptr;
+
+	foreach (hash, index; mapTxIndex )
+	{
+		if(hash == hashIn)
+			ptr = index;
+	}
+	return ptr;
+}
+
+bool mapTxIndexCanFind(Uint256 hashIn)
 {
 	/**
 	* Dertemine whenever a transaction is on mapTxIndex
@@ -43,11 +55,11 @@ bool mapTxIndexCanFind(Uint256 hash)
     * Returns: true if the hash exists otherwise false.
 	*/
 
-	TxIndex* ptr;
+	foreach (hash, index; mapTxIndex )
+	{
+		if(hash == hashIn)
+			return true;
+	}
 
-	ptr = (hash in mapTxIndex);
-	
-	if (ptr !is null)
-		return true;
 	return false;
 }
